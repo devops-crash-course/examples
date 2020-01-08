@@ -1,0 +1,60 @@
+nodes = {
+  "node-1" => {
+    :ip => "192.168.100.11",
+    :ports => [
+      {
+        :guest => "8080",
+        :host => "8080",
+      },
+      {
+        :guest => "8443",
+        :host => "8443",
+      },
+      {
+        :guest => "9080",
+        :host => "9080",
+      },
+      {
+        :guest => "9443",
+        :host => "9443",
+      }
+    ],
+    :compose_file => "/vagrant/docker_compose/httpd.yml",
+  },
+  "node-2" => {
+    :ip => "192.168.100.12",
+    :ports => [
+      {
+        :guest => "13306",
+        :host => "13306",
+      },
+      {
+        :guest => "23306",
+        :host => "23306",
+      }
+    ],
+    :compose_file => "/vagrant/docker_compose/mysql.yml",
+  },
+}
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "centos/7"
+  nodes.each_with_index do |(hostname, info), index|
+    config.vm.define hostname do |cfg|
+      cfg.vm.provider :virtualbox do |vb, override|
+        vb.name = hostname
+        vb.gui = false
+        vb.memory = "1536"
+        override.vm.hostname = hostname
+#        Ця опція зазвичай криво працює в Windows, наразі вона нам не дуже потрібна
+#        override.vm.network :private_network, ip: "#{info[:ip]}"
+        info[:ports].each do |pp|
+          override.vm.network :forwarded_port, guest: pp[:guest], host: pp[:host]
+        end
+        override.vm.provision :docker
+#        Для роботи цієї опції потрібно встановити плагін у вагранті командою: vagrant plugin install vagrant-docker-compose
+        override.vm.provision :docker_compose, yml: "#{info[:compose_file]}", run: "always"
+      end
+    end
+  end
+end
