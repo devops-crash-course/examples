@@ -86,7 +86,6 @@ RUN set -eux; \
 		local distUrl=https://github.com/GrahamDumpleton/mod_wsgi/archive/; \
 		if wget --no-check-certificate -O "$f" "$distUrl$distFile" && [ -s "$f" ]; then \
 			success=1; \
-			break; \
 		fi; \
 		[ -n "$success" ]; \
 	}; \
@@ -159,7 +158,9 @@ RUN set -eux; \
 		"$HTTPD_PREFIX/conf/extra/httpd-ssl.conf" \
 	; \
 	\
-	tar xvfz mod_wsgi.tar.gz -C mod_wsgi; \
+	mkdir -p mod_wsgi; \
+	tar -xf mod_wsgi.tar.gz -C mod_wsgi --strip-components=1; \
+	rm -f mod_wsgi.tar.gz; \
 	cd mod_wsgi; \
 	./configure --with-python=/usr/bin/python --with-apxs=$HTTPD_PREFIX/bin/apxs; \
 	make; make install; \
