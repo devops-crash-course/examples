@@ -1,0 +1,10 @@
+version: "3"
+services:
+  httpd-1:
+    build: ./httpd_image
+    image: httpd_wsgi:latest
+    container_name: 'httpd-container-01'
+    restart: 'always'
+    ports:
+      - "8080:80"
+      - "8443:443"

@@ -19,7 +19,7 @@ nodes = {
         :host => "9443",
       }
     ],
-    :compose_file => "/vagrant/docker_compose/httpd.yml",
+    :compose_file => "/vagrant/docker_compose/web.yml",
   },
   "node-2" => {
     :ip => "192.168.100.12",
@@ -33,7 +33,7 @@ nodes = {
         :host => "23306",
       }
     ],
-    :compose_file => "/vagrant/docker_compose/mysql.yml",
+    :compose_file => "/vagrant/docker_compose/db.yml",
   },
 }
 
