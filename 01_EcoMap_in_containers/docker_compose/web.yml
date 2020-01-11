@@ -1,7 +1,7 @@
 version: "3"
 services:
   httpd-1:
-    build: ./httpd_image
+    build: ./httpd_image/2.4
     image: httpd_wsgi:latest
     container_name: 'httpd-container-01'
     restart: 'always'
