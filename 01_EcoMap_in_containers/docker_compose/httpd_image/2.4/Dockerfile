@@ -83,8 +83,8 @@ RUN set -eux; \
 		local f="$1"; shift; \
 		local distFile="$1"; shift; \
 		local success=; \
-		local distUrl=https://github.com/GrahamDumpleton/mod_wsgi/releases; \
-		if wget -O "$f" "$distUrl$distFile" && [ -s "$f" ]; then \
+		local distUrl=https://github.com/GrahamDumpleton/mod_wsgi/archive/; \
+		if wget --no-check-certificate -O "$f" "$distUrl$distFile" && [ -s "$f" ]; then \
 			success=1; \
 			break; \
 		fi; \
@@ -163,6 +163,8 @@ RUN set -eux; \
 	cd mod_wsgi; \
 	./configure --with-python=/usr/bin/python --with-apxs=$HTTPD_PREFIX/bin/apxs; \
 	make; make install; \
+	cd ..; \
+	rm -rf mod_wsgi; \
 # reset apt-mark's "manual" list so that "purge --auto-remove" will remove all build dependencies
 	apt-mark auto '.*' > /dev/null; \
 	[ -z "$savedAptMark" ] || apt-mark manual $savedAptMark; \
