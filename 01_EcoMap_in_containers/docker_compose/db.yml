@@ -1,7 +1,7 @@
 version: "3"
 services:
   mysql-1:
-    image: mysql:latest
+    image: mysql:5
     container_name: 'mysql-container-01'
     restart: 'always'
     ports:
