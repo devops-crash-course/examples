@@ -8,6 +8,8 @@ services:
       - "13306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=test01test01
+    volumes:
+      - ./configs/mysql:/etc/mysql/conf.d
   memcached-1:
     image: memcached:latest
     container_name: 'memcached-container-01'

@@ -8,3 +8,8 @@ services:
     ports:
       - "8080:80"
       - "8443:443"
+  python-1:
+    build: ./python_image
+    image: python_wsgi:latest
+    container_name: 'python-container-01'
+    restart: 'always'

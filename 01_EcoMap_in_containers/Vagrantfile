@@ -19,6 +19,7 @@ nodes = {
         :host => "9443",
       }
     ],
+    :compose_run => false,
     :compose_file => "/vagrant/docker_compose/web.yml",
   },
   "node-2" => {
@@ -33,6 +34,7 @@ nodes = {
         :host => "23306",
       }
     ],
+    :compose_run => true,
     :compose_file => "/vagrant/docker_compose/db.yml",
   },
 }
@@ -53,7 +55,9 @@ Vagrant.configure("2") do |config|
         end
         override.vm.provision :docker
 #        Для роботи цієї опції потрібно встановити плагін у вагранті командою: vagrant plugin install vagrant-docker-compose
-        override.vm.provision :docker_compose, yml: "#{info[:compose_file]}", run: "always"
+        if info[:compose_run] == true
+          override.vm.provision :docker_compose, yml: "#{info[:compose_file]}", run: "always"
+        end
       end
     end
   end
